@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>We The Greeks — Παρουσίαση</title>
+<meta name="description" content="Η πλατφόρμα συμμετοχικής δημοκρατίας για όλο τον Ελληνισμό — παρουσίαση.">
+<style>
+  :root {
+    --navy: #1E2761;
+    --bg: #10162e;
+    --gold: #C9A227;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    height: 100%;
+    background: var(--bg);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #stage {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    touch-action: pan-y;
+  }
+  #stage img {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto; height: auto;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity .45s ease;
+    box-shadow: 0 0 40px rgba(0,0,0,.5);
+  }
+  #stage img.visible { opacity: 1; }
+
+  #controls {
+    position: fixed;
+    left: 50%;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 22, 46, .78);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 999px;
+    padding: 6px 10px;
+    z-index: 10;
+  }
+  #controls button {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    line-height: 1;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #controls button:active { background: rgba(255,255,255,.15); }
+  #controls button:disabled { opacity: .3; cursor: default; }
+  #counter {
+    color: #fff;
+    font-size: 14px;
+    min-width: 52px;
+    text-align: center;
+    letter-spacing: .05em;
+    font-variant-numeric: tabular-nums;
+  }
+  #fsbtn { font-size: 17px !important; }
+
+  #hint {
+    position: fixed;
+    left: 50%;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    color: rgba(255,255,255,.85);
+    background: rgba(16,22,46,.7);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    z-index: 9;
+    pointer-events: none;
+    transition: opacity .6s ease;
+  }
+  #hint.hidden { opacity: 0; }
+
+  /* invisible tap zones */
+  .zone {
+    position: fixed;
+    top: 0; bottom: 90px;
+    z-index: 5;
+    cursor: pointer;
+  }
+  #zoneprev { left: 0; width: 30%; }
+  #zonenext { right: 0; width: 70%; }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <img id="imgA" alt="Διαφάνεια παρουσίασης We The Greeks">
+    <img id="imgB" alt="">
+  </div>
+  <div id="zoneprev" class="zone"></div>
+  <div id="zonenext" class="zone"></div>
+  <div id="hint">Πάτησε ή σύρε για επόμενο</div>
+  <div id="controls">
+    <button id="prevbtn" aria-label="Προηγούμενο">&#8249;</button>
+    <div id="counter">1&#8202;/&#8202;12</div>
+    <button id="nextbtn" aria-label="Επόμενο">&#8250;</button>
+    <button id="fsbtn" aria-label="Πλήρης οθόνη">&#x26F6;</button>
+  </div>
+<script>
+(function () {
+  'use strict';
+  // Each entry is one presentation slide; its frames are the animation build steps.
+  var SLIDES = [
+    [1], [2], [3], [4],
+    [5, 6, 7, 8, 9],       // Από τον δήμο... σε όλο τον Ελληνισμό (4 κλικ)
+    [10, 11, 12, 13, 14],  // Η ομογένεια στο ίδιο βήμα (4 κλικ)
+    [15], [16], [17], [18],
+    [19, 20, 21, 22],      // Το κλειδί του αποτελέσματος (3 κλικ)
+    [23]
+  ];
+  var FRAMES = [];              // flat list of frame numbers
+  var frameSlide = [];          // frame index -> slide index
+  SLIDES.forEach(function (frames, s) {
+    frames.forEach(function (f) {
+      FRAMES.push(f);
+      frameSlide.push(s);
+    });
+  });
+
+  var cur = 0;                  // current frame index
+  var showingA = true;
+  var imgA = document.getElementById('imgA');
+  var imgB = document.getElementById('imgB');
+  var counter = document.getElementById('counter');
+  var prevbtn = document.getElementById('prevbtn');
+  var nextbtn = document.getElementById('nextbtn');
+  var fsbtn = document.getElementById('fsbtn');
+  var hint = document.getElementById('hint');
+  var hintDismissed = false;
+  var cache = {};
+
+  function src(i) { return 'img/frame-' + String(FRAMES[i]).padStart(2, '0') + '.webp'; }
+
+  function preload(i) {
+    if (i < 0 || i >= FRAMES.length || cache[i]) return;
+    var im = new Image();
+    im.src = src(i);
+    cache[i] = im;
+  }
+
+  function render(instant) {
+    var front = showingA ? imgA : imgB;
+    var back = showingA ? imgB : imgA;
+    var url = src(cur);
+    var apply = function () {
+      back.src = url;
+      var swap = function () {
+        back.classList.add('visible');
+        front.classList.remove('visible');
+        showingA = !showingA;
+      };
+      if (back.decode) { back.decode().then(swap).catch(swap); } else { swap(); }
+    };
+    if (instant) {
+      front.src = url;
+      front.classList.add('visible');
+      back.classList.remove('visible');
+    } else {
+      apply();
+    }
+    var s = frameSlide[cur];
+    counter.textContent = (s + 1) + ' / ' + SLIDES.length;
+    prevbtn.disabled = (cur === 0);
+    nextbtn.disabled = (cur === FRAMES.length - 1);
+    if (history.replaceState) {
+      history.replaceState(null, '', '#s' + (s + 1));
+    }
+    preload(cur + 1); preload(cur + 2); preload(cur - 1);
+  }
+
+  function next() { if (cur < FRAMES.length - 1) { cur++; render(); dismissHint(); } }
+  function prev() { if (cur > 0) { cur--; render(); dismissHint(); } }
+
+  function dismissHint() {
+    if (!hintDismissed) { hintDismissed = true; hint.classList.add('hidden'); }
+  }
+
+  document.getElementById('zonenext').addEventListener('click', next);
+  document.getElementById('zoneprev').addEventListener('click', prev);
+  nextbtn.addEventListener('click', next);
+  prevbtn.addEventListener('click', prev);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown' || e.key === 'Enter') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { cur = 0; render(); }
+    else if (e.key === 'End') { cur = FRAMES.length - 1; render(); }
+  });
+
+  // swipe
+  var tx = null, ty = null;
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length === 1) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (tx === null) return;
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    tx = null;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  // fullscreen
+  if (document.documentElement.requestFullscreen) {
+    fsbtn.addEventListener('click', function () {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    });
+  } else {
+    fsbtn.style.display = 'none';
+  }
+
+  // deep link: #s7 opens slide 7 (first frame)
+  var m = /^#s(\d+)$/.exec(location.hash);
+  if (m) {
+    var target = Math.min(Math.max(parseInt(m[1], 10), 1), SLIDES.length) - 1;
+    for (var i = 0; i < frameSlide.length; i++) {
+      if (frameSlide[i] === target) { cur = i; break; }
+    }
+  }
+
+  render(true);
+  // trickle-load everything once idle (total ~1.3 MB)
+  setTimeout(function () { for (var i = 0; i < FRAMES.length; i++) preload(i); }, 1500);
+  setTimeout(dismissHint, 6000);
+})();
+</script>
+</body>
+</html>
