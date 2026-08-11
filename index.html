@@ -1,34 +1,238 @@
 <!doctype html>
-<html lang="en">
+<html lang="el">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hello We the Greeks!</title>
-  <style>
-    /* Simple, clean centering */
-    html,body {
-      height: 100%;
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
-      color: #0b3d91;
-    }
-    .wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-    }
-    h1 {
-      font-size: 2.5rem;
-      letter-spacing: 0.02em;
-      margin: 0;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>We The Greeks — Επαναφέρουμε τη Δημοκρατία</title>
+<meta name="description" content="Reinstating democracy — η πλατφόρμα συμμετοχικής δημοκρατίας για όλο τον Ελληνισμό. Το βήμα και το αμφιθέατρο στήνονται.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --navy: #0e1430;
+    --gold: #C9A227;
+    --gold-soft: #d8b84a;
+    --marble: #e9e5d9;
+    --ice: #CADCFC;
+    --text: #f5f2e8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--navy);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  header {
+    text-align: center;
+    padding: clamp(28px, 6vh, 64px) 20px 8px;
+  }
+  .eyebrow {
+    letter-spacing: .38em;
+    text-indent: .38em;
+    font-size: clamp(11px, 1.4vw, 14px);
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: Cambria, Georgia, "Times New Roman", serif;
+    font-size: clamp(1.9rem, 5.2vw, 3.4rem);
+    line-height: 1.15;
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+  .en {
+    font-family: Cambria, Georgia, serif;
+    font-style: italic;
+    color: var(--ice);
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    margin: 0 0 18px;
+  }
+  .lede {
+    max-width: 560px;
+    margin: 0 auto 26px;
+    color: #c9cde4;
+    font-size: clamp(.95rem, 1.8vw, 1.05rem);
+    line-height: 1.65;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--gold);
+    color: #101636;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-size: 1rem;
+    transition: transform .2s ease, box-shadow .2s ease;
+    box-shadow: 0 4px 18px rgba(201,162,39,.25);
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(201,162,39,.35); }
+  .scene {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 10px 0 0;
+    min-height: 320px;
+  }
+  .scene svg {
+    width: min(1150px, 100%);
+    height: auto;
+    display: block;
+  }
+  footer {
+    text-align: center;
+    padding: 18px 16px 22px;
+    font-size: .82rem;
+    color: #8f96b8;
+  }
+  footer a { color: #aeb6d8; text-decoration: none; }
+  footer a:hover { color: var(--gold-soft); }
+  .sep { margin: 0 8px; opacity: .5; }
+
+  /* ---- animations ---- */
+  .sway       { transform-origin: 540px 170px; animation: sway 9s ease-in-out infinite alternate; }
+  .sway-load  { transform-origin: 390px 172px; animation: swayload 9s ease-in-out infinite alternate; }
+  .ghost      { animation: ghostpulse 5.5s ease-in-out infinite; }
+  .ghost.g2   { animation-delay: 1.8s; }
+  .ghost.g3   { animation-delay: 3.4s; }
+  .dawn       { animation: dawnbreathe 12s ease-in-out infinite; transform-origin: 618px 516px; }
+  .tw1        { animation: twinkle 4s ease-in-out infinite; }
+  .tw2        { animation: twinkle 4s ease-in-out 2s infinite; }
+  @keyframes sway       { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+  @keyframes swayload   { from { transform: rotate(1.2deg);  } to { transform: rotate(-1.2deg); } }
+  @keyframes ghostpulse { 0%,100% { opacity: .3; } 50% { opacity: .75; } }
+  @keyframes dawnbreathe{ 0%,100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+  @keyframes twinkle    { 0%,100% { opacity: .25; } 50% { opacity: .9; } }
+  @media (prefers-reduced-motion: reduce) {
+    .sway, .sway-load, .ghost, .dawn, .tw1, .tw2 { animation: none; }
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Hello We the Greeks!</h1>
-  </div>
+
+<header>
+  <p class="eyebrow">We The Greeks</p>
+  <h1>Επαναφέρουμε τη Δημοκρατία</h1>
+  <p class="en">Reinstating democracy — for Greeks everywhere.</p>
+  <p class="lede">Το βήμα της Πνύκας και το αμφιθέατρο στήνονται αυτή τη στιγμή.
+     Ένας τόπος όπου οι πολίτες συγκεντρώνονται, διαβουλεύονται και αποφασίζουν — ξανά.</p>
+  <a class="cta" href="/presentation/">Δείτε την παρουσίαση&nbsp;→</a>
+</header>
+
+<div class="scene" role="img" aria-label="Η Πνύκα ξαναχτίζεται την αυγή: γερανός τοποθετεί μάρμαρα στο βήμα, ενώ δίπλα χτίζεται αμφιθέατρο όπου συγκεντρώνονται πολίτες">
+<svg viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#0a0f28"/>
+      <stop offset=".55" stop-color="#141c44"/>
+      <stop offset="1"   stop-color="#2a3670"/>
+    </linearGradient>
+    <radialGradient id="dawnglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0"  stop-color="#e8c766" stop-opacity=".5"/>
+      <stop offset=".5" stop-color="#d8a93c" stop-opacity=".15"/>
+      <stop offset="1"  stop-color="#d8a93c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- sky -->
+  <rect x="0" y="0" width="1200" height="640" fill="url(#sky)"/>
+
+  <!-- stars — sparse -->
+  <g fill="#e9ecff">
+    <circle class="tw1" cx="120" cy="80"  r="1.4"/>
+    <circle class="tw2" cx="330" cy="60"  r="1.2"/>
+    <circle class="tw1" cx="600" cy="52"  r="1.4"/>
+    <circle class="tw2" cx="830" cy="90"  r="1.3"/>
+    <circle class="tw1" cx="1060" cy="70" r="1.4"/>
+    <circle class="tw2" cx="950" cy="180" r="1"/>
+    <circle class="tw1" cx="210" cy="180" r="1"/>
+  </g>
+
+  <!-- dawn rising at the horizon, between bema and theatre -->
+  <g class="dawn">
+    <circle cx="618" cy="516" r="230" fill="url(#dawnglow)"/>
+    <circle cx="618" cy="520" r="46" fill="#e8c766" opacity=".85"/>
+  </g>
+
+  <!-- far hill silhouette -->
+  <path d="M0 470 Q 180 420 400 452 Q 620 484 800 462 Q 1010 438 1200 468 L1200 640 L0 640 Z" fill="#111939"/>
+  <!-- near ground -->
+  <path d="M0 520 Q 300 505 640 516 Q 950 526 1200 514 L1200 640 L0 640 Z" fill="#0c1230"/>
+
+  <!-- ================= AMPHITHEATRE (under construction) ================= -->
+  <g>
+    <!-- completed seating rows: clean arcs, no outlines -->
+    <path d="M802 512 A 78 78 0 0 1 958 512"   fill="none" stroke="#ddd7c6" stroke-width="13" stroke-linecap="round"/>
+    <path d="M770 512 A 110 110 0 0 1 990 512" fill="none" stroke="#cfc8b2" stroke-width="13" stroke-linecap="round"/>
+    <path d="M738 512 A 142 142 0 0 1 1022 512" fill="none" stroke="#bfb8a0" stroke-width="13" stroke-linecap="round"/>
+    <!-- row being built: solid two-thirds, ghost remainder -->
+    <path d="M706 512 A 174 174 0 0 1 967 361.3" fill="none" stroke="#aaa389" stroke-width="13" stroke-linecap="round"/>
+    <path class="ghost g2" d="M967 361.3 A 174 174 0 0 1 1080 512" fill="none" stroke="#C9A227" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>
+    <!-- future outer row: a whisper of an outline -->
+    <path class="ghost g3" d="M674 512 A 206 206 0 0 1 1086 512" fill="none" stroke="#C9A227" stroke-width="1.6" stroke-dasharray="2 12" stroke-linecap="round"/>
+    <!-- citizens: head-dot + single brush-stroke body -->
+    <g stroke="#e9e5d9" stroke-width="4.5" stroke-linecap="round" fill="#e9e5d9">
+      <circle cx="845" cy="415" r="4" stroke="none"/><path d="M845 424 L845 438" fill="none"/>
+      <circle cx="900" cy="400" r="4" stroke="none"/><path d="M900 409 L900 423" fill="none"/>
+      <circle cx="868" cy="376" r="4" stroke="none"/><path d="M868 385 L868 399" fill="none"/>
+    </g>
+    <!-- two citizens arriving -->
+    <g stroke="#cfd6ef" stroke-width="4.5" stroke-linecap="round" fill="#cfd6ef">
+      <circle cx="1122" cy="518" r="4.6" stroke="none"/><path d="M1122 528 L1122 550" fill="none"/>
+      <circle cx="1154" cy="521" r="4.6" stroke="none"/><path d="M1154 531 L1154 553" fill="none"/>
+    </g>
+  </g>
+
+  <!-- ================= BEMA OF THE PNYX (being rebuilt) ================= -->
+  <g>
+    <!-- platform steps: flat marble slabs, no outlines -->
+    <rect x="250" y="470" width="214" height="33" rx="2" fill="#cfc8b2"/>
+    <rect x="267" y="437" width="180" height="31" rx="2" fill="#ddd7c6"/>
+    <rect x="284" y="405" width="68"  height="30" rx="2" fill="#e9e5d9"/>
+    <!-- ghost slot awaiting the crane's block -->
+    <rect class="ghost" x="356" y="405" width="68" height="30" rx="2" fill="none" stroke="#C9A227" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>
+    <!-- the speaker, already trying out the bema -->
+    <g stroke="#e9e5d9" stroke-linecap="round" fill="#e9e5d9">
+      <circle cx="316" cy="373" r="5.6" stroke="none"/>
+      <path d="M316 384 L316 405" stroke-width="6" fill="none"/>
+      <path d="M319 390 L334 380" stroke-width="3.4" fill="none"/>
+    </g>
+  </g>
+
+  <!-- ================= CRANE — a single calm line ================= -->
+  <g stroke="#C9A227" fill="none" stroke-width="2.4" stroke-linecap="round">
+    <!-- mast -->
+    <path d="M540 504 L540 170"/>
+    <!-- slewing group: jib + tie + counterweight + load -->
+    <g class="sway">
+      <path d="M262 172 L648 171"/>
+      <path d="M540 142 L390 171 M540 142 L648 171" stroke-width="1.4"/>
+      <path d="M634 171 L662 171" stroke-width="7"/>
+      <!-- hanging load, hovering right above its dashed slot -->
+      <g class="sway-load">
+        <path d="M390 172 L390 348" stroke-width="1.4"/>
+        <rect x="356" y="350" width="68" height="30" rx="2" fill="#e9e5d9" stroke="none"/>
+        <path d="M368 350 L390 336 L412 350" stroke-width="1.4"/>
+      </g>
+    </g>
+  </g>
+</svg>
+</div>
+
+<footer>
+  © We The Greeks
+  <span class="sep">·</span> we-the-greeks.world
+  <span class="sep">·</span> <a href="/legal/el/terms.html">Όροι χρήσης</a>
+  <span class="sep">·</span> <a href="/legal/el/privacy.html">Απόρρητο</a>
+</footer>
+
 </body>
 </html>

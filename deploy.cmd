@@ -22,6 +22,12 @@ call :mirror legal
 call :mirror el
 call :mirror en
 
+copy /Y "%SRC%index.html" "%DST%\index.html" >nul
+if errorlevel 1 (
+  echo ERROR publishing index.html
+  set FAILED=1
+)
+
 echo.
 if %FAILED%==0 (
   echo Done - static content published to %DST%
