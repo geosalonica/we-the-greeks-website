@@ -56,11 +56,12 @@
     padding: 6px 10px;
     z-index: 10;
   }
-  #controls button {
+  #controls button, #controls a {
     appearance: none;
     background: transparent;
     border: none;
     color: #fff;
+    text-decoration: none;
     font-size: 24px;
     line-height: 1;
     width: 44px; height: 44px;
@@ -68,8 +69,9 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
-  #controls button:active { background: rgba(255,255,255,.15); }
+  #controls button:active, #controls a:active { background: rgba(255,255,255,.15); }
   #controls button:disabled { opacity: .3; cursor: default; }
+  #homebtn, #restartbtn { font-size: 19px !important; }
   #counter {
     color: #fff;
     font-size: 14px;
@@ -116,9 +118,11 @@
   <div id="zonenext" class="zone"></div>
   <div id="hint">Πάτησε ή σύρε για επόμενο</div>
   <div id="controls">
+    <a id="homebtn" href="/" aria-label="Αρχική σελίδα">&#8962;</a>
     <button id="prevbtn" aria-label="Προηγούμενο">&#8249;</button>
     <div id="counter">1&#8202;/&#8202;12</div>
     <button id="nextbtn" aria-label="Επόμενο">&#8250;</button>
+    <button id="restartbtn" aria-label="Πρώτη διαφάνεια">&#8676;</button>
     <button id="fsbtn" aria-label="Πλήρης οθόνη">&#x26F6;</button>
   </div>
 <script>
@@ -204,6 +208,9 @@
   document.getElementById('zoneprev').addEventListener('click', prev);
   nextbtn.addEventListener('click', next);
   prevbtn.addEventListener('click', prev);
+  document.getElementById('restartbtn').addEventListener('click', function () {
+    cur = 0; render(); dismissHint();
+  });
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown' || e.key === 'Enter') { e.preventDefault(); next(); }

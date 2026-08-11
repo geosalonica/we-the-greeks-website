@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>We The Greeks — Επαναφέρουμε τη Δημοκρατία</title>
+<title>We The Greeks — Πλατφόρμα Συμμετοχικής Δημοκρατίας</title>
 <meta name="description" content="Reinstating democracy — η πλατφόρμα συμμετοχικής δημοκρατίας για όλο τον Ελληνισμό. Το βήμα και το αμφιθέατρο στήνονται.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9B%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <style>
@@ -35,14 +35,15 @@
   .eyebrow {
     letter-spacing: .38em;
     text-indent: .38em;
-    font-size: clamp(11px, 1.4vw, 14px);
+    font-size: clamp(15px, 2.2vw, 22px);
+    font-weight: 700;
     color: var(--gold);
     text-transform: uppercase;
     margin: 0 0 18px;
   }
   h1 {
     font-family: Cambria, Georgia, "Times New Roman", serif;
-    font-size: clamp(1.9rem, 5.2vw, 3.4rem);
+    font-size: clamp(1.8rem, 4.8vw, 3.1rem);
     line-height: 1.15;
     margin: 0 0 10px;
     font-weight: 700;
@@ -98,23 +99,27 @@
   .sep { margin: 0 8px; opacity: .5; }
 
   /* ---- animations ---- */
-  .sway       { transform-origin: 540px 170px; animation: sway 9s ease-in-out infinite alternate; }
-  .sway-load  { transform-origin: 390px 172px; animation: swayload 9s ease-in-out infinite alternate; }
+  /* crane work cycle: the marble block is lowered towards its dashed slot,
+     held there a moment, then lifted again — one slow 14s loop */
+  .cable      { transform-origin: 390px 172px; animation: cabledrop 14s ease-in-out infinite; }
+  .load-block { animation: loaddrop 14s ease-in-out infinite; }
+  .sway       { transform-origin: 540px 170px; animation: sway 13s ease-in-out infinite alternate; }
   .ghost      { animation: ghostpulse 5.5s ease-in-out infinite; }
   .ghost.g2   { animation-delay: 1.8s; }
   .ghost.g3   { animation-delay: 3.4s; }
   .dawn       { animation: dawnbreathe 12s ease-in-out infinite; transform-origin: 618px 516px; }
   .tw1        { animation: twinkle 4s ease-in-out infinite; }
   .tw2        { animation: twinkle 4s ease-in-out 2s infinite; }
-  @keyframes sway       { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
-  @keyframes swayload   { from { transform: rotate(1.2deg);  } to { transform: rotate(-1.2deg); } }
+  @keyframes cabledrop  { 0%, 100% { transform: scaleY(1); } 45%, 58% { transform: scaleY(1.39); } }
+  @keyframes loaddrop   { 0%, 100% { transform: translateY(0); } 45%, 58% { transform: translateY(64px); } }
+  @keyframes sway       { from { transform: rotate(-1.1deg); } to { transform: rotate(1.1deg); } }
   @keyframes ghostpulse { 0%,100% { opacity: .3; } 50% { opacity: .75; } }
   @keyframes dawnbreathe{ 0%,100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
   @keyframes twinkle    { 0%,100% { opacity: .25; } 50% { opacity: .9; } }
-  /* reduced motion: stop movement (crane sway) but keep the gentle
-     opacity-only effects — they are safe for motion sensitivity */
+  /* reduced motion: stop the jib sway; the slow block cycle and the
+     opacity-only effects are gentle and stay on */
   @media (prefers-reduced-motion: reduce) {
-    .sway, .sway-load { animation: none; }
+    .sway { animation: none; }
     .dawn { animation-name: dawnbreathe-still; }
   }
   @keyframes dawnbreathe-still { 0%,100% { opacity: .75; } 50% { opacity: 1; } }
@@ -124,14 +129,14 @@
 
 <header>
   <p class="eyebrow">We The Greeks</p>
-  <h1>Επαναφέρουμε τη Δημοκρατία</h1>
+  <h1>Πλατφόρμα Συμμετοχικής Δημοκρατίας</h1>
   <p class="en">Reinstating democracy — for Greeks everywhere.</p>
   <p class="lede">Το βήμα της Πνύκας και το αμφιθέατρο στήνονται αυτή τη στιγμή.
      Ένας τόπος όπου οι πολίτες συγκεντρώνονται, διαβουλεύονται και αποφασίζουν — ξανά.</p>
   <a class="cta" href="/presentation/">Δείτε την παρουσίαση&nbsp;→</a>
 </header>
 
-<div class="scene" role="img" aria-label="Η Πνύκα ξαναχτίζεται την αυγή: γερανός τοποθετεί μάρμαρα στο βήμα, ενώ δίπλα χτίζεται αμφιθέατρο όπου συγκεντρώνονται πολίτες">
+<div class="scene" role="img" aria-label="Η Πνύκα ξαναχτίζεται την αυγή: γερανός κατεβάζει αργά ένα μάρμαρο στο βήμα όπου στέκεται ομιλητής, απέναντί του χτίζεται χαμηλό αμφιθέατρο με καθισμένους πολίτες, και στο βάθος ένας μικρός αρχαίος ναός">
 <svg viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
@@ -168,63 +173,79 @@
 
   <!-- far hill silhouette -->
   <path d="M0 470 Q 180 420 400 452 Q 620 484 800 462 Q 1010 438 1200 468 L1200 640 L0 640 Z" fill="#111939"/>
+
+  <!-- a small ancient temple on the far hill, a distant memory -->
+  <g stroke="#9fb0dc" stroke-width="2" stroke-linecap="round" fill="none" opacity=".75">
+    <path d="M154 431 L212 431"/>
+    <path d="M165 429 L165 412 M183 429 M183 429 L183 412 M201 429 L201 412"/>
+    <path d="M160 410 L206 410"/>
+    <path d="M158 408 L183 396 L208 408"/>
+  </g>
+
   <!-- near ground -->
   <path d="M0 520 Q 300 505 640 516 Q 950 526 1200 514 L1200 640 L0 640 Z" fill="#0c1230"/>
 
-  <!-- ================= AMPHITHEATRE (under construction) ================= -->
+  <!-- ============ AMPHITHEATRE — side elevation, facing the bema ============ -->
   <g>
-    <!-- completed seating rows: clean arcs, no outlines -->
-    <path d="M802 512 A 78 78 0 0 1 958 512"   fill="none" stroke="#ddd7c6" stroke-width="13" stroke-linecap="round"/>
-    <path d="M770 512 A 110 110 0 0 1 990 512" fill="none" stroke="#cfc8b2" stroke-width="13" stroke-linecap="round"/>
-    <path d="M738 512 A 142 142 0 0 1 1022 512" fill="none" stroke="#bfb8a0" stroke-width="13" stroke-linecap="round"/>
-    <!-- row being built: solid two-thirds, ghost remainder -->
-    <path d="M706 512 A 174 174 0 0 1 967 361.3" fill="none" stroke="#aaa389" stroke-width="13" stroke-linecap="round"/>
-    <path class="ghost g2" d="M967 361.3 A 174 174 0 0 1 1080 512" fill="none" stroke="#C9A227" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>
-    <!-- future outer row: a whisper of an outline -->
-    <path class="ghost g3" d="M674 512 A 206 206 0 0 1 1086 512" fill="none" stroke="#C9A227" stroke-width="1.6" stroke-dasharray="2 12" stroke-linecap="round"/>
-    <!-- citizens: head-dot + single brush-stroke body -->
-    <g stroke="#e9e5d9" stroke-width="4.5" stroke-linecap="round" fill="#e9e5d9">
-      <circle cx="845" cy="415" r="4" stroke="none"/><path d="M845 424 L845 438" fill="none"/>
-      <circle cx="900" cy="400" r="4" stroke="none"/><path d="M900 409 L900 423" fill="none"/>
-      <circle cx="868" cy="376" r="4" stroke="none"/><path d="M868 385 L868 399" fill="none"/>
+    <!-- three finished tiers, stepping up and away from the speaker -->
+    <rect x="700" y="491" width="400" height="25" rx="2" fill="#ddd7c6"/>
+    <rect x="790" y="469" width="310" height="22" rx="2" fill="#cfc8b2"/>
+    <rect x="880" y="447" width="220" height="22" rx="2" fill="#bfb8a0"/>
+    <!-- next tier: still a blueprint -->
+    <rect class="ghost g2" x="970" y="425" width="130" height="22" rx="2" fill="none" stroke="#C9A227" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>
+    <!-- and the one after, barely a thought -->
+    <path class="ghost g3" d="M1060 403 L1100 403" stroke="#C9A227" stroke-width="1.6" stroke-dasharray="2 11" stroke-linecap="round" fill="none"/>
+    <!-- light scaffolding at the unfinished end -->
+    <g stroke="#C9A227" stroke-width="2" opacity=".8" fill="none">
+      <path d="M1112 514 L1112 420"/>
+      <path d="M1102 447 L1122 447"/>
+      <path d="M1102 425 L1122 425"/>
     </g>
-    <!-- two citizens arriving -->
+    <!-- citizens seated on the tiers, facing the speaker -->
+    <g stroke="#e9e5d9" stroke-width="4.5" stroke-linecap="round" fill="#e9e5d9">
+      <circle cx="716" cy="479" r="4.2" stroke="none"/><path d="M716 486 L716 497" fill="none"/>
+      <circle cx="748" cy="479" r="4.2" stroke="none"/><path d="M748 486 L748 497" fill="none"/>
+      <circle cx="806" cy="457" r="4.2" stroke="none"/><path d="M806 464 L806 475" fill="none"/>
+      <circle cx="896" cy="435" r="4.2" stroke="none"/><path d="M896 442 L896 453" fill="none"/>
+    </g>
+    <!-- two more citizens arriving -->
     <g stroke="#cfd6ef" stroke-width="4.5" stroke-linecap="round" fill="#cfd6ef">
-      <circle cx="1122" cy="518" r="4.6" stroke="none"/><path d="M1122 528 L1122 550" fill="none"/>
-      <circle cx="1154" cy="521" r="4.6" stroke="none"/><path d="M1154 531 L1154 553" fill="none"/>
+      <circle cx="1148" cy="508" r="4.6" stroke="none"/><path d="M1148 518 L1148 540" fill="none"/>
+      <circle cx="1178" cy="511" r="4.6" stroke="none"/><path d="M1178 521 L1178 543" fill="none"/>
     </g>
   </g>
 
-  <!-- ================= BEMA OF THE PNYX (being rebuilt) ================= -->
+  <!-- ============ BEMA OF THE PNYX (being rebuilt) ============ -->
   <g>
-    <!-- platform steps: flat marble slabs, no outlines -->
+    <!-- platform steps: flat marble slabs -->
     <rect x="250" y="470" width="214" height="33" rx="2" fill="#cfc8b2"/>
     <rect x="267" y="437" width="180" height="31" rx="2" fill="#ddd7c6"/>
     <rect x="284" y="405" width="68"  height="30" rx="2" fill="#e9e5d9"/>
     <!-- ghost slot awaiting the crane's block -->
     <rect class="ghost" x="356" y="405" width="68" height="30" rx="2" fill="none" stroke="#C9A227" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>
-    <!-- the speaker, already trying out the bema -->
+    <!-- the speaker: open, low gesture towards the assembly -->
     <g stroke="#e9e5d9" stroke-linecap="round" fill="#e9e5d9">
       <circle cx="316" cy="373" r="5.6" stroke="none"/>
       <path d="M316 384 L316 405" stroke-width="6" fill="none"/>
-      <path d="M319 390 L334 380" stroke-width="3.4" fill="none"/>
+      <path d="M319 389 L335 394" stroke-width="3.4" fill="none"/>
     </g>
   </g>
 
-  <!-- ================= CRANE — a single calm line ================= -->
+  <!-- ============ CRANE — a single calm line, slowly at work ============ -->
   <g stroke="#C9A227" fill="none" stroke-width="2.4" stroke-linecap="round">
     <!-- mast -->
     <path d="M540 504 L540 170"/>
-    <!-- slewing group: jib + tie + counterweight + load -->
+    <!-- slewing group: jib + ties + counterweight + working load -->
     <g class="sway">
       <path d="M262 172 L648 171"/>
       <path d="M540 142 L390 171 M540 142 L648 171" stroke-width="1.4"/>
       <path d="M634 171 L662 171" stroke-width="7"/>
-      <!-- hanging load, hovering right above its dashed slot -->
-      <g class="sway-load">
-        <path d="M390 172 L390 348" stroke-width="1.4"/>
-        <rect x="356" y="350" width="68" height="30" rx="2" fill="#e9e5d9" stroke="none"/>
-        <path d="M368 350 L390 336 L412 350" stroke-width="1.4"/>
+      <!-- the cable pays out... -->
+      <path class="cable" d="M390 172 L390 336" stroke-width="1.4"/>
+      <!-- ...and the block descends towards its dashed slot -->
+      <g class="load-block">
+        <rect x="356" y="338" width="68" height="30" rx="2" fill="#e9e5d9" stroke="none"/>
+        <path d="M368 338 L390 324 L412 338" stroke-width="1.4"/>
       </g>
     </g>
   </g>
