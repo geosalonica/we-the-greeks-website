@@ -13,10 +13,27 @@ if errorlevel 1 (
   exit /b 1
 )
 
-robocopy "%SRC%presentation" "%DST%\presentation" /MIR /NFL /NDL /NJH
-robocopy "%SRC%legal" "%DST%\legal" /MIR /NFL /NDL /NJH
-robocopy "%SRC%el" "%DST%\el" /MIR /NFL /NDL /NJH
-robocopy "%SRC%en" "%DST%\en" /MIR /NFL /NDL /NJH
+set FAILED=0
+call :mirror presentation
+call :mirror legal
+call :mirror el
+call :mirror en
 
 echo.
-echo Done - static content published to %DST%
+if %FAILED%==0 (
+  echo Done - static content published to %DST%
+) else (
+  echo FAILED - one or more folders were NOT published. Run this script
+  echo from an elevated command prompt ^(Run as administrator^).
+  exit /b 1
+)
+goto :eof
+
+:mirror
+robocopy "%SRC%%~1" "%DST%\%~1" /MIR /NFL /NDL /NJH
+REM robocopy exit codes 0-7 mean success; 8+ means at least one failure
+if errorlevel 8 (
+  echo ERROR publishing %~1
+  set FAILED=1
+)
+goto :eof
