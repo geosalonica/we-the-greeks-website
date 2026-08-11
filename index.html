@@ -111,9 +111,13 @@
   @keyframes ghostpulse { 0%,100% { opacity: .3; } 50% { opacity: .75; } }
   @keyframes dawnbreathe{ 0%,100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
   @keyframes twinkle    { 0%,100% { opacity: .25; } 50% { opacity: .9; } }
+  /* reduced motion: stop movement (crane sway) but keep the gentle
+     opacity-only effects — they are safe for motion sensitivity */
   @media (prefers-reduced-motion: reduce) {
-    .sway, .sway-load, .ghost, .dawn, .tw1, .tw2 { animation: none; }
+    .sway, .sway-load { animation: none; }
+    .dawn { animation-name: dawnbreathe-still; }
   }
+  @keyframes dawnbreathe-still { 0%,100% { opacity: .75; } 50% { opacity: 1; } }
 </style>
 </head>
 <body>
