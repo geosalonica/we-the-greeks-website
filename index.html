@@ -101,8 +101,8 @@
   /* ---- animations ---- */
   /* crane work cycle: the marble block is lowered towards its dashed slot,
      held there a moment, then lifted again — one slow 14s loop */
-  .cable      { transform-origin: 390px 172px; animation: cabledrop 14s ease-in-out infinite; }
-  .load-block { animation: loaddrop 14s ease-in-out infinite; }
+  .cable      { transform-origin: 390px 172px; animation: cabledrop 20s ease-in-out infinite; }
+  .load-block { animation: loaddrop 20s ease-in-out infinite; }
   .sway       { transform-origin: 540px 170px; animation: sway 13s ease-in-out infinite alternate; }
   .ghost      { animation: ghostpulse 5.5s ease-in-out infinite; }
   .ghost.g2   { animation-delay: 1.8s; }
@@ -132,7 +132,7 @@
   <h1>Πλατφόρμα Συμμετοχικής Δημοκρατίας</h1>
   <p class="en">Reinstating democracy — for Greeks everywhere.</p>
   <p class="lede">Το βήμα της Πνύκας και το αμφιθέατρο στήνονται αυτή τη στιγμή.
-     Ένας τόπος όπου οι πολίτες συγκεντρώνονται, διαβουλεύονται και αποφασίζουν — ξανά.</p>
+     Ένας τόπος όπου οι πολίτες συγκεντρώνονται, διαβουλεύονται και αποφασίζουν. Ξανά!</p>
   <a class="cta" href="/presentation/">Δείτε την παρουσίαση&nbsp;→</a>
 </header>
 
@@ -175,11 +175,13 @@
   <path d="M0 470 Q 180 420 400 452 Q 620 484 800 462 Q 1010 438 1200 468 L1200 640 L0 640 Z" fill="#111939"/>
 
   <!-- a small ancient temple on the far hill, a distant memory -->
-  <g stroke="#9fb0dc" stroke-width="2" stroke-linecap="round" fill="none" opacity=".75">
-    <path d="M154 431 L212 431"/>
-    <path d="M165 429 L165 412 M183 429 M183 429 L183 412 M201 429 L201 412"/>
-    <path d="M160 410 L206 410"/>
-    <path d="M158 408 L183 396 L208 408"/>
+  <g fill="#9fb0dc" opacity=".8">
+    <rect x="152" y="438" width="62" height="4" rx="1"/>
+    <rect x="161" y="418" width="5"  height="20" rx="1"/>
+    <rect x="180" y="418" width="5"  height="20" rx="1"/>
+    <rect x="199" y="418" width="5"  height="20" rx="1"/>
+    <rect x="157" y="413" width="52" height="5" rx="1"/>
+    <path d="M154 413 L183 398 L212 413 Z"/>
   </g>
 
   <!-- near ground -->
@@ -248,6 +250,20 @@
         <path d="M368 338 L390 324 L412 338" stroke-width="1.4"/>
       </g>
     </g>
+  </g>
+
+  <!-- ============ FOREGROUND: citizens watching the works ============ -->
+  <g stroke="#cfd6ef" stroke-linecap="round" fill="#cfd6ef">
+    <!-- two citizens in conversation -->
+    <circle cx="612" cy="556" r="7" stroke="none"/>
+    <path d="M612 569 L612 598" stroke-width="7" fill="none"/>
+    <path d="M616 574 L628 579" stroke-width="4" fill="none"/>
+    <circle cx="640" cy="558" r="7" stroke="none"/>
+    <path d="M640 571 L640 600" stroke-width="7" fill="none"/>
+    <!-- one a little apart, observing the construction -->
+    <circle cx="486" cy="562" r="7" stroke="none"/>
+    <path d="M486 575 L486 604" stroke-width="7" fill="none"/>
+    <path d="M482 580 L471 573" stroke-width="4" fill="none"/>
   </g>
 </svg>
 </div>
