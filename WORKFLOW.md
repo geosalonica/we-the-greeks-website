@@ -6,7 +6,7 @@ Static content of **we-the-greeks.world**. ⚠️ **The live IIS site is NOT a p
 
 1. Edit locally in `C:\ProjectRepos\WeTheGreeks\website`
 2. Commit on `main`, push to GitHub (`geosalonica/we-the-greeks-website`, public)
-3. On the server (RDP), run `F:\AI\Projects\WeTheGreeksLiveSite\deploy.cmd` — it pulls this repo into the staging checkout at `F:\AI\Projects\WeTheGreeksLiveSite` and robocopy-mirrors **only the static subfolders** (`presentation`, `legal`, `el`, `en`) into `C:\inetpub\wwwroot`. Publishing is manual and user-controlled.
+3. On the server (RDP, elevated prompt), run `F:\AI\Projects\WeTheGreeksLiveSite\deploy.cmd` — it pulls this repo into the staging checkout at `F:\AI\Projects\WeTheGreeksLiveSite` and robocopy-mirrors **only the static subfolders** (`presentation`, `legal`, `el`, `en`) into **`C:\inetpub\wwwroot\wwwroot`** (the app's web root — see below). Publishing is manual and user-controlled.
 
 ## Hard rules
 
@@ -23,7 +23,11 @@ Static content of **we-the-greeks.world**. ⚠️ **The live IIS site is NOT a p
 - `deploy.cmd` — the server-side publish script described above
 - root `web.config` — only relevant if the repo is ever served standalone; NOT deployed to wwwroot
 
+## How statics are actually served
+
+The backend's `web.config` routes **every** request through the ASP.NET Core module (`path="*"`), so IIS itself serves nothing. Democracy.Web calls `app.UseStaticFiles()` with the default web root, i.e. the **`wwwroot` subfolder**: `C:\inetpub\wwwroot\wwwroot`. Static files anywhere else (including the top level of `C:\inetpub\wwwroot`) are invisible; unmatched paths fall through to the app, whose auth answers **401** — a 401 on a "static" URL almost always means *file not found in the web root*, not a permissions problem.
+
 ## IIS notes
 
-- `.webp` works via `presentation/web.config` mimeMap (and ASP.NET Core static middleware knows it natively).
+- `.webp` is served with the correct MIME type by the ASP.NET Core static middleware natively (`presentation/web.config` matters only if the folder is ever served by plain IIS).
 - Mobile app dependencies on this host: `https://we-the-greeks.world/api/*` (backend), `/legal/el/*.html` (legal links). Zitadel is `auth2.we-the-greeks.world`, Belenios is `elections.we-the-greeks.world` — separate hosts, not touched by this repo.
