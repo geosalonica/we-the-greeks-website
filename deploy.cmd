@@ -4,8 +4,11 @@ REM The we-the-greeks.world site serves the Democracy.Web backend from
 REM C:\inetpub\wwwroot; this script must NEVER touch the root files there
 REM (web.config, appsettings*.json, *.dll) - it only mirrors the static
 REM subfolders from this git checkout.
+REM Democracy.Web serves static files ONLY from its web root, the wwwroot
+REM SUBFOLDER (app.UseStaticFiles() with default WebRootPath) - files at
+REM C:\inetpub\wwwroot top level are invisible to it (ANCM path="*").
 set SRC=%~dp0
-set DST=C:\inetpub\wwwroot
+set DST=C:\inetpub\wwwroot\wwwroot
 
 git -C "%SRC%." pull --ff-only
 if errorlevel 1 (
