@@ -111,7 +111,8 @@
   .kalpi-set      { animation: kalpi-set 52s linear infinite; }
   .spk-guide      { animation: spk-guide 52s ease-in-out infinite; }
   .spk-stand      { animation: spk-stand 52s linear infinite; }
-  .spk-arm        { transform-origin: 299px 389px; animation: beckon 1.7s ease-in-out infinite alternate; }
+  .spk-arm        { transform-origin: 299px 389px; animation: beckon 1.13s ease-in-out infinite alternate, arm-guide 52s linear infinite; }
+  .spk-arm-low    { animation: arm-low 52s linear infinite; }
   .ghost      { animation: ghostpulse 5.5s ease-in-out infinite; }
   .ghost.g2   { animation-delay: 1.8s; }
   .ghost.g3   { animation-delay: 3.4s; }
@@ -160,6 +161,15 @@
   }
   @keyframes beckon {
     from { transform: rotate(0deg); } to { transform: rotate(30deg); }
+  }
+  /* the moment the lectern touches down the waving stops: the raised
+     arm gives way to a lowered one for the walk over — it rises again
+     only as the standing pose at the lectern */
+  @keyframes arm-guide {
+    0%, 14.5% { opacity: 1; } 16%, 97% { opacity: 0; } 98.5%, 100% { opacity: 1; }
+  }
+  @keyframes arm-low {
+    0%, 14.5% { opacity: 0; } 16%, 96% { opacity: 1; } 97.5%, 100% { opacity: 0; }
   }
   @keyframes kalpi-wait {
     0%, 41% { opacity: 1; } 43%, 95% { opacity: 0; } 98.5%, 100% { opacity: 1; }
@@ -372,6 +382,7 @@
       <circle cx="296" cy="373" r="5.6" stroke="none"/>
       <path d="M296 384 L296 405" stroke-width="6" fill="none"/>
       <path class="spk-arm" d="M299 389 L312 370" stroke-width="3.4" fill="none"/>
+      <path class="spk-arm-low" d="M299 389 L304 403" stroke-width="3.4" fill="none"/>
     </g>
     <!-- the speaker, act two: standing at his lectern -->
     <g class="spk-stand" stroke="#e9e5d9" stroke-linecap="round" fill="#e9e5d9">
